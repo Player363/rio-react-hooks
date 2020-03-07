@@ -41,8 +41,8 @@ class HooksClass extends React.Component {
     }
 
     // 是否已经初始化
-    const isInit = arr.length > index;
-    const result = cb(isInit, index, arr, this);
+    const Initialized = arr.length > index;
+    const result = cb(Initialized, index, arr, this);
     this.registeredCursor[key].index++;
     return result;
   }
