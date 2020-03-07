@@ -3,8 +3,8 @@ import {DidUnmount} from '../Const';
 import RenderContext from '../RenderContext';
 
 function _useEffect(isLayoutEffect, func, dependent) {
-  return RenderContext.currentContext.cursors('effect', (isInit, effectIndex, effectArr) => {
-    if (!isInit) {
+  return RenderContext.currentContext.cursors('effect', (initialized, effectIndex, effectArr) => {
+    if (!initialized) {
       let effectFunc = func;
       let destroyFunc = null;
       effectArr[effectIndex] = {

@@ -4,8 +4,8 @@ import RenderContext from '../RenderContext';
  * @returns {[any, function]}
  */
 function useState(initialValue) {
-  return RenderContext.currentContext.cursors('state', (isInit, stateIndex, stateArr, currentComponent) => {
-    if (!isInit) {
+  return RenderContext.currentContext.cursors('state', (initialized, stateIndex, stateArr, currentComponent) => {
+    if (!initialized) {
       // 初始化，可以传入函数
       let value = typeof initialValue === 'function' ? initialValue() : initialValue;
       let setValue = nextValue => {
