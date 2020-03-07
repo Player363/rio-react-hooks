@@ -9,20 +9,11 @@ React.useHooks = fn => fn;
 
 let isMyHooks = true;
 
-const Hooks = {
-  get useState() {
-    return isMyHooks ? myHooks.useState : React.useState;
-  },
-  get useEffect() {
-    return isMyHooks ? myHooks.useEffect : React.useEffect;
-  },
-  get useLayoutEffect() {
-    return isMyHooks ? myHooks.useLayoutEffect : React.useLayoutEffect;
-  },
-  get useHooks() {
-    return isMyHooks ? myHooks.useHooks : React.useHooks;
+const Hooks = new Proxy({}, {
+  get(target, key) {
+    return isMyHooks ? myHooks[key] : React[key];
   }
-};
+});
 
 export function render(fn) {
   const myOutPut = [];
@@ -51,10 +42,4 @@ export function render(fn) {
       fn(nativeHooksApp.container);
     },
   };
-}
-
-export function sleep(time) {
-  return new Promise(v => {
-    setTimeout(v, time);
-  });
 }
