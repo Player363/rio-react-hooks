@@ -13,6 +13,14 @@ export function dependentChange(dependent, oldDependent) {
   );
 }
 
+export function memoChange(dependent, oldDependent) {
+  return (
+    dependent == null ||
+    oldDependent == null ||
+    dependent.some((v, i) => !Object.is(v, oldDependent[i]))
+  );
+}
+
 export {
   idleCallback
 };
