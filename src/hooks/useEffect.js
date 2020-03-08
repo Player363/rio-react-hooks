@@ -20,11 +20,9 @@ function _useEffect(isLayoutEffect, func, dependent) {
       const _dependent = effectArr[effectIndex].dependent;
       if (dependent && _dependent && dependent.length !== _dependent.length) {
         console.warn(`前一次与后一次传递的依赖不一致！\n\n之前：${JSON.stringify(_dependent)}\n现在：${JSON.stringify(dependent)}`);
-        effectArr[effectIndex].oldDependent = effectArr[effectIndex].dependent;
-      } else {
-        effectArr[effectIndex].oldDependent = effectArr[effectIndex].dependent;
-        effectArr[effectIndex].dependent = dependent;
       }
+      effectArr[effectIndex].oldDependent = effectArr[effectIndex].dependent;
+      effectArr[effectIndex].dependent = dependent;
     }
   });
 }

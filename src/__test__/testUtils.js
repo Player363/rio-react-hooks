@@ -45,9 +45,3 @@ export function render(fn) {
     },
   };
 }
-
-export function sleep(time) {
-  return new Promise(v => {
-    setTimeout(v, time);
-  });
-}

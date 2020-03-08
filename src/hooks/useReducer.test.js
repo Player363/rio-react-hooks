@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, sleep} from '../__test__/testUtils';
+import {render} from '../__test__/testUtils';
 import {fireEvent, getByTestId} from '@testing-library/react';
 
 test('useReducer - 基本渲染 + 跳过dispatch更新', async () => {
@@ -19,7 +19,7 @@ test('useReducer - 基本渲染 + 跳过dispatch更新', async () => {
     }
 
     const Counter = useHooks(function () {
-      const [state, dispatch] = useReducer(reducer, 1);
+      const [state, dispatch] = useReducer(reducer, 0, init => init + 1);
       const [state2, dispatch2] = useReducer(reducer, 2);
       const [state3, dispatch3] = useReducer(reducer, 3);
       log('render：', state, state2, state3);

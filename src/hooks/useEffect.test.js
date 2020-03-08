@@ -201,3 +201,29 @@ test('useEffect - 调用顺序发生变化', () => {
   });
   result.comparison();
 });
+
+test('useEffect - 依赖个数变化', () => {
+  const result = render(({useHooks, useState, useEffect}, log, mode) => {
+    const App = useHooks(() => {
+      const [count, setCount] = useState(0);
+      log('render', count);
+      useEffect((...args) => {
+        log('执行effect函数', args, count);
+      }, count >= 2 ? [3, 3] : [count]);
+      return <div>
+        当前值: <span id="count">{count}</span><br/>
+        <button data-testid="C+1" onClick={() => setCount(count + 1)}>+1
+        </button>
+      </div>;
+    });
+
+    return App;
+  });
+  result.action((container) => {
+    fireEvent.click(getByTestId(container, 'C+1'));
+    fireEvent.click(getByTestId(container, 'C+1'));
+    fireEvent.click(getByTestId(container, 'C+1'));
+    fireEvent.click(getByTestId(container, 'C+1'));
+  });
+  result.comparison();
+});

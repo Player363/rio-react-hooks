@@ -1,4 +1,5 @@
 const idleCallback = (() => {
+  /* istanbul ignore next */
   if (typeof requestIdleCallback !== 'undefined') return fn => requestIdleCallback(fn);
 
   return fn => fn();
