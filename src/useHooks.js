@@ -2,12 +2,17 @@ import React from 'react';
 import RenderContext from './RenderContext';
 import {orderError} from './utils/error';
 import {runEffect} from './hooks/useEffect';
-import {DidMount, DidUnmount, DidUpdate} from './Const';
+import {$$forwardRef, $$renderFunction, DidMount, DidUnmount, DidUpdate} from './Const';
 
 class HooksClass extends React.Component {
   renderFunction = () => { };
   firstRender = true;
   registeredCursor = {};
+
+  constructor(props) {
+    super(props);
+    this.renderFunction = props[$$renderFunction];
+  }
 
   componentDidMount() {
     runEffect.call(this, DidMount);
@@ -59,7 +64,8 @@ class HooksClass extends React.Component {
   render() {
     this.cursorsResetIndex();
     RenderContext.push(this);
-    const renderResult = this.renderFunction(this.props);  // 渲染结果
+    const {[$$renderFunction]: renderFunction, [$$forwardRef]: ref, ...props} = this.props;
+    const renderResult = this.renderFunction(props, ref);  // 渲染结果
     RenderContext.pop();
     this.cursorsIndexCheck();
     this.firstRender = false;
@@ -69,12 +75,15 @@ class HooksClass extends React.Component {
 }
 
 function useHooks(renderFunction) {
-  return class extends HooksClass {
-    constructor(props) {
-      super(props);
-      this.renderFunction = renderFunction;
-    }
-  };
+  return (props, ref) => (
+    <HooksClass
+      {...(props || {})}
+      {...{
+        [$$renderFunction]: renderFunction,
+        [$$forwardRef]: ref,
+      }}
+    />
+  );
 }
 
 export {
