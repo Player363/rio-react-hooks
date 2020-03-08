@@ -6,10 +6,10 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "father build -w",
+    "start": "cross-env NODE_ENV=development father build -w",
+    "build": "cross-env NODE_ENV=production father build",
     "test": "father test --color",
-    "test:coverage": "father test --color --coverage",
-    "build": "father build"
+    "test:coverage": "father test --color --coverage"
   },
   "keywords": [
     "react",
@@ -34,6 +34,7 @@
     "@types/node": "^13.7.7",
     "@types/react": "^16.9.23",
     "babel-jest": "^25.1.0",
+    "cross-env": "^7.0.2",
     "father": "^2.29.2",
     "prettier": "^1.19.1",
     "react": "^16.13.0",
