@@ -13,7 +13,7 @@ export function dependentChange(dependent, oldDependent) {
   );
 }
 
-export function memoChange(dependent, oldDependent) {
+export function memoDependentChange(dependent, oldDependent) {
   return (
     dependent == null ||
     oldDependent == null ||

@@ -1,5 +1,5 @@
 import RenderContext from '../RenderContext';
-import {memoChange} from '../utils/functions';
+import {memoDependentChange} from '../utils/functions';
 
 function useMemo(comFunc, dependent) {
   return RenderContext.currentContext.cursors('memo', (initialized, memoIndex, memoArr) => {
@@ -9,7 +9,7 @@ function useMemo(comFunc, dependent) {
         dependent,
       };
     } else {
-      if (memoChange(memoArr[memoIndex].dependent, dependent)) {
+      if (memoDependentChange(memoArr[memoIndex].dependent, dependent)) {
         memoArr[memoIndex].dependent = dependent;
         memoArr[memoIndex].value = comFunc();
       }
