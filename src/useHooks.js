@@ -5,9 +5,6 @@ import {runEffect} from './hooks/useEffect';
 import {DidMount, DidUnmount, DidUpdate} from './Const';
 
 class HooksClass extends React.Component {
-  state = {
-    error: false
-  };
   renderFunction = () => { };
   firstRender = true;
   registeredCursor = {};
@@ -22,10 +19,6 @@ class HooksClass extends React.Component {
 
   componentWillUnmount() {
     runEffect.call(this, DidUnmount);
-  }
-
-  componentDidCatch() {
-    this.setState({error: true});
   }
 
   /* --------------∽-★-∽--- 我是华丽的分割线 ---∽-★-∽-------------- */
@@ -64,8 +57,6 @@ class HooksClass extends React.Component {
 
   /* --------------∽-★-∽--- 我是华丽的分割线 ---∽-★-∽-------------- */
   render() {
-    if (this.state.error) return <div/>;
-
     this.cursorsResetIndex();
     RenderContext.push(this);
     const renderResult = this.renderFunction(this.props);  // 渲染结果
