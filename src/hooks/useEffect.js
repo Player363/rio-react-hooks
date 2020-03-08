@@ -39,19 +39,16 @@ function useLayoutEffect(func, dependent) {
 
 function runEffect(lifeCycle) {
   const currentComponent = this;
-  const list = currentComponent.registeredCursor['effect']?.arr;
+  const allEffect = currentComponent.registeredCursor['effect']?.arr;
 
-  if (!list) return;
+  if (!allEffect) return;
 
   const layoutEffectArr = [];
   const effectArr = [];
-  list.forEach(v => v.isLayoutEffect ? layoutEffectArr.push(v) : effectArr.push(v));
+  allEffect.forEach(v => v.isLayoutEffect ? layoutEffectArr.push(v) : effectArr.push(v));
 
   if (lifeCycle === DidUnmount) {
-    layoutEffectArr.forEach(item => item.destroyFunc && item.destroyFunc());
-    idleCallback(() => {
-      effectArr.forEach(item => item.destroyFunc && item.destroyFunc());
-    });
+    allEffect.forEach(item => item.destroyFunc && item.destroyFunc());
   } else {
     layoutEffectArr.forEach(item => dependentChange(item.dependent, item.oldDependent) && item.destroyFunc && item.destroyFunc());
     layoutEffectArr.forEach(item => dependentChange(item.dependent, item.oldDependent) && (item.destroyFunc = item.effectFunc()));
