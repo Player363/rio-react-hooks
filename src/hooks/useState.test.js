@@ -63,12 +63,16 @@ test('useState - 跳过state更新：https://react.docschina.org/docs/hooks-refe
   const result = render(({useHooks, useState}, log, mode) => {
     const Counter = useHooks(() => {
       const [count, setCount] = useState(0);
-      if (mode === 'myHooks') log(1); else log(1);
+      const [count2, setCount2] = useState(0);
+      log('render');
       return <div>
-        当前值: <span>{count}</span><br/>
+        当前值: <span>{count} {count2}</span><br/>
         <button data-testid="+1" onClick={() => setCount(count + 1)}>+1</button>
         <button data-testid="-1" onClick={() => setCount(preCount => preCount - 1)}>-1</button>
         <button data-testid="=0" onClick={() => setCount(0)}>reset</button>
+        <button data-testid="2+1" onClick={() => setCount2(count2 + 1)}>+1</button>
+        <button data-testid="2-1" onClick={() => setCount2(preCount => preCount - 1)}>-1</button>
+        <button data-testid="2=0" onClick={() => setCount2(0)}>reset</button>
       </div>;
     });
     return Counter;
@@ -88,10 +92,14 @@ test('useState - 跳过state更新：https://react.docschina.org/docs/hooks-refe
     fireEvent.click(getByTestId(container, '-1'));
     fireEvent.click(getByTestId(container, '=0'));
   });
-  setTimeout(() => {
-    result.comparison();
-    done();
-  }, 0);
+  result.comparison();
+  result.action((container) => {
+    fireEvent.click(getByTestId(container, '2+1'));
+    fireEvent.click(getByTestId(container, '=0'));
+    fireEvent.click(getByTestId(container, '=0'));
+  });
+  result.comparison();
+  done();
 });
 
 test('useState - 调用顺序发生变化1', () => {

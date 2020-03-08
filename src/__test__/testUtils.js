@@ -16,8 +16,8 @@ const Hooks = new Proxy({}, {
 });
 
 export function render(fn) {
-  const myOutPut = [];
-  const nativeOutPut = [];
+  let myOutPut = [];
+  let nativeOutPut = [];
 
   isMyHooks = true;
   const App = fn(Hooks, (...args) => myOutPut.push(JSON.stringify([...args])), 'myHooks');
@@ -36,10 +36,18 @@ export function render(fn) {
         prettier.format(JSON.stringify(myOutPut), {parser: 'babel'}),
         prettier.format(JSON.stringify(nativeOutPut), {parser: 'babel'}),
       );
+      myOutPut = [];
+      nativeOutPut = [];
     },
     action(fn) {
       fn(myHooksApp.container);
       fn(nativeHooksApp.container);
     },
   };
+}
+
+export function sleep(time) {
+  return new Promise(v => {
+    setTimeout(v, time);
+  });
 }
