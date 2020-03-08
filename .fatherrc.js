@@ -5,6 +5,7 @@ export default {
   esm: {
     type: 'rollup',
   },
+  runtimeHelpers: true,
   extraBabelPlugins: [
   ],
 };
