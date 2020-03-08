@@ -1,5 +1,5 @@
 import React from 'react';
-import * as myHooks from '../../dist/index.esm';
+import * as myHooks from '../index';
 import assert from 'assert';
 import {render as reactRender} from '@testing-library/react';
 
