@@ -3,7 +3,7 @@ import React from 'react';
 import {fireEvent, getByTestId} from '@testing-library/react';
 
 
-test('综合测试1', () => {
+test('综合测试 - useEffect & useLayoutEffect', () => {
   const result = render(({useHooks, useState, useLayoutEffect, useEffect}, log, mode) => {
     const Counter = useHooks(() => {
       const [countA, setCountA] = useState(0);
