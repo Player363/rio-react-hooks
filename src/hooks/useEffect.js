@@ -39,26 +39,25 @@ function useLayoutEffect(func, dependent) {
 
 function runEffect(lifeCycle) {
   const currentComponent = this;
+  const list = currentComponent.registeredCursor['effect']?.arr;
 
-  if (currentComponent.registeredCursor['effect']) {
-    currentComponent.registeredCursor['effect'].arr.forEach(item => {
-      const fn = () => {
-        if (lifeCycle === DidUnmount) {
-          return item.destroyFunc && item.destroyFunc();
-        }
+  if (!list) return;
 
-        if (dependentChange(item.dependent, item.oldDependent)) {
-          item.destroyFunc && item.destroyFunc();
-          const destroyFunc = item.effectFunc();
-          item.destroyFunc = destroyFunc;
-        }
-      };
+  const layoutEffectArr = [];
+  const effectArr = [];
+  list.forEach(v => v.isLayoutEffect ? layoutEffectArr.push(v) : effectArr.push(v));
 
-      if (item.isLayoutEffect) {
-        fn();
-      } else {
-        idleCallback(fn);
-      }
+  if (lifeCycle === DidUnmount) {
+    layoutEffectArr.forEach(item => item.destroyFunc && item.destroyFunc());
+    idleCallback(() => {
+      effectArr.forEach(item => item.destroyFunc && item.destroyFunc());
+    });
+  } else {
+    layoutEffectArr.forEach(item => dependentChange(item.dependent, item.oldDependent) && item.destroyFunc && item.destroyFunc());
+    layoutEffectArr.forEach(item => dependentChange(item.dependent, item.oldDependent) && (item.destroyFunc = item.effectFunc()));
+    idleCallback(() => {
+      effectArr.forEach(item => dependentChange(item.dependent, item.oldDependent) && item.destroyFunc && item.destroyFunc());
+      effectArr.forEach(item => dependentChange(item.dependent, item.oldDependent) && (item.destroyFunc = item.effectFunc()));
     });
   }
 }

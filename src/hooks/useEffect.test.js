@@ -26,7 +26,7 @@ test('useEffect - 基本测试', (done) => {
     return Counter;
   });
   result.action((container) => {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       fireEvent.click(getByTestId(container, '+1'));
     }
   });
@@ -107,6 +107,7 @@ test('useEffect - 依赖跳过触发', async (done) => {
         当前值: <span id="count">{countA} - {countB}</span><br/>
         <button data-testid="A+1" onClick={() => setCountA(countA + 1)}>A+1</button>
         <button data-testid="B+1" onClick={() => setCountB(countB + 1)}>B+1</button>
+        <button data-testid="=0" onClick={() => setCountB(0) + setCountA(0)}>=0</button>
       </div>;
     });
 
@@ -121,6 +122,13 @@ test('useEffect - 依赖跳过触发', async (done) => {
     return App;
   });
 
+  result.action((container) => {
+    fireEvent.click(getByTestId(container, '=0'));
+    fireEvent.click(getByTestId(container, 'A+1'));
+    fireEvent.click(getByTestId(container, 'B+1'));
+    fireEvent.click(getByTestId(container, '=0'));
+  });
+  result.comparison();
   result.action((container) => {
     fireEvent.click(getByTestId(container, 'A+1'));
     fireEvent.click(getByTestId(container, 'A+1'));
