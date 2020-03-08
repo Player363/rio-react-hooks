@@ -8,7 +8,7 @@ function useImperativeHandle(ref, creator, dependent) {
         ref(instances);
         // 解除副作用
         return () => ref(null);
-      } else if (ref) {
+      } else {
         const instances = creator();
         ref.current = instances;
         return () => ref.current = null;

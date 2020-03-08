@@ -2,7 +2,7 @@ import React, {forwardRef} from 'react';
 import {render} from '../__test__/testUtils';
 import {fireEvent, getByTestId} from '@testing-library/react';
 
-test('useImperativeHandle - 基本测试', () => {
+test('useImperativeHandle - useRef', () => {
   const result = render(({useHooks, useState, useRef, useImperativeHandle}, log, mode) => {
     const FancyInput = forwardRef(useHooks(function (props, ref) {
       const [count, setCount] = useState(1);
@@ -63,3 +63,36 @@ test('useImperativeHandle - 基本测试', () => {
   });
   result.comparison();
 });
+
+test('useImperativeHandle - function ref', () => {
+  const result = render(({useHooks, useState, useRef, useImperativeHandle}, log, mode) => {
+    const FancyInput = forwardRef(useHooks(function (props, ref) {
+      const [count, setCount] = useState(1);
+      useImperativeHandle(ref, () => 'aaaa', [count]);
+      return <div>
+        {count}
+        <button data-testid="1" onClick={() => setCount(count + 1)}>+1</button>
+      </div>;
+    }));
+
+    const App = useHooks(function Form() {
+      const [show, setShow] = useState(true);
+
+      return (
+        <>
+          <button data-testid="show" onClick={() => setShow(!show)}>show</button>
+          {show && <FancyInput ref={v => log(v)}/>}
+        </>
+      );
+    });
+    return App;
+  });
+  result.action((container) => {
+    fireEvent.click(getByTestId(container, 'show'));
+    fireEvent.click(getByTestId(container, 'show'));
+    fireEvent.click(getByTestId(container, '1'));
+    fireEvent.click(getByTestId(container, 'show'));
+  });
+  result.comparison();
+});
+

@@ -77,7 +77,7 @@ class HooksClass extends React.Component {
 function useHooks(renderFunction) {
   return (props, ref) => (
     <HooksClass
-      {...(props || {})}
+      {...props}
       {...{
         [$$renderFunction]: renderFunction,
         [$$forwardRef]: ref,
