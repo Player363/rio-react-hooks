@@ -5,11 +5,15 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "cross-env NODE_ENV=development father build -w",
     "build": "cross-env NODE_ENV=production father build",
     "test": "father test --color",
-    "test:coverage": "father test --color --coverage"
+    "test:coverage": "father test --color --coverage",
+    "prepublishOnly": "npm run build && npm run test"
   },
   "keywords": [
     "react",
